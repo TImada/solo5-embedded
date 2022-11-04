@@ -16,4 +16,4 @@ This repository includes information about Solo5/MirageOS porting to microcontro
 
 ## Porting to other MCUs
 
-- A document will become available soon!
+- See [the porting document](./docs/PORTING.md).
