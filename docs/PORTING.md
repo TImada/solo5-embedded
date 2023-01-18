@@ -6,9 +6,10 @@ If you want to have Solo5 frt porting to a processor named 'xyz', topics below m
 
 1. Porting an OCaml compiler to target processor architecture
 2. Providing a `solo5-frt-xyz` package
-3. Adding the version `xyz` to the `conf-frt` package
-4. Adding processor architecture files to the `solo5-frt` package
-5. Adding a target processor to the `ocaml-solo5-cross-frt` package
+3. Providing a `solo5-frt-xyz` package
+4. Adding the version `xyz` to the `conf-frt` package
+5. Adding processor architecture files to the `solo5-frt` package
+6. Adding a target processor to the `ocaml-solo5-cross-frt` package
 
 ## 1. Porting an OCaml compiler to target processor architecture
 
@@ -18,7 +19,17 @@ The [embedded branch](https://github.com/TImada/ocaml/tree/embedded) now experim
 
 You must define a new value for the `-target=` configuration option if you add a new processor architecture support. This value is used in the `conf-frt` package. (For the support of the ARMv7-R processor architecture above, a value `armv7r-freestanding-eabihf` for the option was defined)
 
-## 2. Providing a solo5-frt-xyz package
+## 2. Providing a FreeRTOS kernel
+
+MCU vendors often their own FreeRTOS porting for their MCUs. The easiest way to provide a FreeRTOS kernel for your target MCU is to use a kernel provided by a MCU vendor.
+
+In any cases, you must have a FreeRTOS kernel with the follwing configuration.
+
+- heap_4.c is used as a dynamic memory allocation scheme.
+  - `configSUPPORT_DYNAMIC_ALLOCATION` and `configAPPLICATION_ALLOCATED_HEAP` must be enabled
+  - `configTOTAL_HEAP_SIZE` must be set with enough size
+
+## 3. Providing a solo5-frt-xyz package
 
 This package have functionality to provide required files for a target processor. You must at least implement functionality to copy required files. Building a library during installation of this package can be optional.
 
@@ -84,8 +95,26 @@ int platform_puts(const char *buf, int n);
 #define PLATFORM_PRINTF (XXX)
 #define PLATFORM_PERROR (YYY)
 
-/* Early platform initialization before the FreeRTOS task invocation */
-void early_platform_init(void);
+/* Macros for networking */
+/* Define LWIP_INPUT_TASK or LWIP_INPUT_ISR.
+ * LWIP_INPUT_TASK : LWIP processing for a taregt processor is done in 
+ *                   a FreeRTOS task
+ * LWIP_INPUT_ISR  : LWIP processing for a taregt processor is done in 
+ *                   an ISR (interrupt service routine)
+ */
+#define LWIP_INPUT_TASK
+//#define LWIP_INPUT_ISR
+
+/* LWIP_NETIF_INIT represents an initialization handler usually invoked
+ * for the original netif_add function.
+ * This handler varies depending on a target processor.
+ */
+#define LWIP_NETIF_INIT xxxx_init
+
+/* Early platform initialization before FreeRTOS becomes ready */
+void early_platform_init_1(void);
+/* Early platform initialization after FreeRTOS became ready */
+void early_platform_init_2(void);
 
 /* Get the current timer count count value on a target processor */
 uint64_t platform_get_timer_count(void);
@@ -175,11 +204,11 @@ cross-prefix: "arm-none-eabi-"
 
 `cross-prefix` defines a prefix to be added in order to specify a cross compiler. This variable is used in the opam file of [solo5-frt](https://github.com/TImada/solo5/blob/frt/opam/solo5-frt.opam).
 
-## 4. Adding processor architecture files to the solo5-frt package
+## 5. Adding processor architecture files to the solo5-frt package
 
 You can find several `cpu_***.{c,h}` files in the [solo5-frt repository](https://github.com/TImada/solo5/tree/frt/bindings). You will have to add corresponding processor architecture files if your target processor architecture is not yet included. 
 
-## 5. Adding a target processor to the ocaml-solo5-cross-frt package
+## 6. Adding a target processor to the ocaml-solo5-cross-frt package
 
 You can find processor specific settings below in [configure.sh](https://github.com/TImada/ocaml-solo5/blob/frt/configure.sh) of the ocaml-solo5-cross-frt package.
 
