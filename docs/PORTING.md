@@ -6,10 +6,10 @@ If you want to have Solo5 frt porting to a processor named 'xyz', topics below m
 
 1. Porting an OCaml compiler to target processor architecture
 2. Providing a `solo5-frt-xyz` package
-3. Providing a `solo5-frt-xyz` package
 4. Adding the version `xyz` to the `conf-frt` package
 5. Adding processor architecture files to the `solo5-frt` package
-6. Adding a target processor to the `ocaml-solo5-cross-frt` package
+6. Adding processor specific PMU functions to the `solo5-frt` package
+7. Adding a target processor to the `ocaml-solo5-cross-frt` package
 
 ## 1. Porting an OCaml compiler to target processor architecture
 
@@ -47,6 +47,7 @@ You should define several variables below.
 
 ```
 $(MARCH)			 : Processor architecture (specify the same as in the -march option for GCC)
+$(PROC_FAMILY)		 : Processor family (currently `ARM_CV7R` for ARM Cortex-R4/R5/R7/R8 and `ARM_CV7M_DWT` for ARM Cortex-M4/M7 with DWT are supported)
 $(CFLAGS_SOC)        : CFLAGS used for compiling frt binding codes
 $(HOSTCFLAGS_SOC)    : CFLAGS used for compiling frt tender codes
 $(frt_soc_SRCS)      : Additonal source files compiled in the frt tender side
@@ -208,7 +209,10 @@ cross-prefix: "arm-none-eabi-"
 
 You can find several `cpu_***.{c,h}` files in the [solo5-frt repository](https://github.com/TImada/solo5/tree/frt/bindings). You will have to add corresponding processor architecture files if your target processor architecture is not yet included. 
 
-## 6. Adding a target processor to the ocaml-solo5-cross-frt package
+## 6. Adding processor specific PMU functions to the `solo5-frt` package
+You can find processor specific PMU functions named as `frt_pmu_init` and `frt_pmu_read_cycle` in the [solo5-frt repository](https://github.com/TImada/solo5/tree/frt/tenders/frt/frt_pmu.c). You will have add PMU functions for your target processor (family) if they are not yet implemented.
+
+## 7. Adding a target processor to the ocaml-solo5-cross-frt package
 
 You can find processor specific settings below in [configure.sh](https://github.com/TImada/ocaml-solo5/blob/frt/configure.sh) of the ocaml-solo5-cross-frt package.
 
