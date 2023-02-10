@@ -89,6 +89,13 @@ int platform_puts(const char *buf, int n);
 ```c
 (platform_tender.h)
 
+/* Base task priority for MirageOS related tasks */
+/* This priority value is used in frt_startup.c.
+ * #define MIRAGE_TASK_PRI     (MIRAGE_BASE_PRI)
+ * #define BACKEND_TASK_PRI    (MIRAGE_TASK_PRI - 1)
+ */
+#define MIRAGE_BASE_PRI (5) 
+
 /* Macros for the console */
 /* PLATFORM_PRINTF : platform specific printf function
  * PLATFORM_PERROR : platform specific printf function with error consideration
