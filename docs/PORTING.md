@@ -119,6 +119,11 @@ int platform_puts(const char *buf, int n);
  */
 #define LWIP_NETIF_INIT xxxx_init
 
+/* Supported number of each I/O device type 
+ * MAX_NETDEV : The number of network devices (ports) 
+ */
+#define MAX_NETDEV (1U)
+
 /* Early platform initialization before FreeRTOS becomes ready */
 void early_platform_init_1(void);
 /* Early platform initialization after FreeRTOS became ready */
