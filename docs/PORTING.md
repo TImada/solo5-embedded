@@ -92,9 +92,11 @@ int platform_puts(const char *buf, int n);
 /* Base task priority for MirageOS related tasks */
 /* This priority value is used in frt_startup.c.
  * #define MIRAGE_TASK_PRI     (MIRAGE_BASE_PRI)
- * #define BACKEND_TASK_PRI    (MIRAGE_TASK_PRI - 1)
+ *
+ * This value should be the maximum value which can be defined for 
+ * the target FreeRTOS configuration.
  */
-#define MIRAGE_BASE_PRI (5) 
+#define MIRAGE_BASE_PRI (14) 
 
 /* Macros for the console */
 /* PLATFORM_PRINTF : platform specific printf function

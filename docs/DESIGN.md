@@ -23,7 +23,7 @@ Major processor vendors often provide FreeRTOS configured for their  processors.
 
 ### Main execution sequence
 
-The Solo5 frt binding (then tender) are invoked from a FreeRTOS task named 'solo5_main'. Another support task named 'backend_main' is in charge of idle handling.
+The Solo5 frt tender and binding are invoked from a FreeRTOS task named 'solo5_main'. The other task named 'idle' is [an idle task](https://www.freertos.org/RTOS-idle-task.html) automatically created when the FreeRTOS scheduler is invoked.
 
 ![frt-chart](../imgs/frt_chart.png)
 
@@ -105,7 +105,7 @@ $ opam install ocaml-solo5-cross-frt
 
 # Configure MirageOS to use the Solo5 frt (we assume that the hello world console sample is our target)
 $ cd /path/to/mirage-skeleton/device-usage/console
-$ mirage configure frt
+$ mirage configure -t frt
 
 # Build the target unikernel
 $ make
