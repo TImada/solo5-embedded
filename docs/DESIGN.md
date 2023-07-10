@@ -121,9 +121,10 @@ The original OCaml compiler does not suppport processor embedded processor archi
 Currently, modified OCaml compiler implementation supporting Arm(r) Cortex(r)-R5F is experimentally provided. This package is installed automatically during the `ocaml-solo5-cross-frt` installation step.
 
 ```
-OCaml base version               : 4.13.1
+OCaml base version               : 4.14.1
 Source package name in opam      : ocaml-embedded-src
 Supported processor architecture : Arm(r) Cortex(r)-R5F with VFPv3-D16
+                                 : Arm(r) Cortex(r)-M7 with VFPv5-D16
 ```
 
 You can find the source code repository at [here](https://github.com/TImada/ocaml/tree/embedded).
@@ -157,9 +158,9 @@ One ELF binary named "`${application_name}.frt`" is generated. This file include
 ### Supported processor cores
 
 - Arm(r) Cortex(r)-R5F in TI AM64x series (Package '[solo5-frt-am64x-r5](https://github.com/TImada/solo5-frt-am64x-r5)')
-- (Next target could be Arm(r) Cortex(r)-M7 in NXP RT117x series)
+- Arm(r) Cortex(r)-M7 in i.MX RT1176 (Package '[solo5-frt-rt1176-m7](https://github.com/TImada/solo5-frt-rt1176-m7)')
 
 ### Supported peripheral devices
 
 - Debug console
-- (Next target could be a wired networking device)
+- Wired networking device
